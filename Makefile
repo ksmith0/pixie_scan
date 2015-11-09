@@ -81,7 +81,7 @@ CINCLUDEDIRS += -Iinclude
 #------- define basic compiler flags, no warnings on code that is not our own
 FFLAGS   += -O3
 GCCFLAGS += -fPIC $(CINCLUDEDIRS) -Dnewreadout
-CXXFLAGS += -Wall -g -fPIC $(CINCLUDEDIRS) -Dnewreadout
+CXXFLAGS += -Wall -O3 -fPIC $(CINCLUDEDIRS) -Dnewreadout
 
 ifdef ONLINE
 CXXFLAGS += -DONLINE
@@ -117,13 +117,13 @@ endif
 ifdef USEROOT
 CXX_OBJS  += $(ROOTPROCESSORO)
 PIXIE = pixie_ldf_c_root$(ExeSuf)
+endif
 ROOTCONFIG   := root-config
 
 #no uncomment ROOTCLFAGS   := $(filter-out pthread,$(ROOTCFLAGS))
-CXXFLAGS     += $(shell $(ROOTCONFIG) --cflags) -Duseroot
+CXXFLAGS     += $(shell $(ROOTCONFIG) --cflags) $(shell $(ROOTCONFIG) --incdir)
 LDFLAGS      += $(shell $(ROOTCONFIG) --ldflags)
 LDLIBS       += $(shell $(ROOTCONFIG) --libs)
-endif
 
 #------------ Compile with Gamma-Gamma gates support in GeProcessor
 ifdef GGATES

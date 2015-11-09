@@ -27,8 +27,8 @@
 
     <Map verbose_calibration="False" verbose_map="False" verbose_walk="False">
         <Module number="0">
-            <Channel number="0" type="labr3" subtype="r6231_100"></Channel>
-            <Channel number="1" type="tvandle" subtype="single"></Channel>
+            <Channel number="0" type="tvandle" subtype="single"></Channel>
+            <Channel number="1" type="labr3" subtype="r7724_100"></Channel>
         </Module>
         <Module number="2">
             <Channel number="0" type="ignore" subtype="ignore"></Channel>
@@ -99,12 +99,12 @@
             </Vandle>
             <LaBr3>
                 <r6231_100>
-                    <Beta value="0.154652"/>
-                    <Gamma value="0.104837"/>
+                    <Beta value="0.1658"/>
+                    <Gamma value="0.0982"/>
                 </r6231_100>
                 <r7724_100>
-                    <Beta value="0.362307"/>
-                    <Gamma value="0.186129"/>
+                    <Beta value="0.17892"/> 
+                    <Gamma value="0.14228"/>
                 </r7724_100>
             </LaBr3>
             <SingleBeta>
