@@ -12,6 +12,9 @@
 #include "PlotsRegister.hpp"
 #include "Exceptions.hpp"
 
+///This define enables damm plotting.
+#define DAMM
+
 using namespace std;
 
 /** Do banana gating using ban files args are the Banana number in the ban file,
@@ -183,6 +186,7 @@ bool Plots::Plot(int dammId, double val1, double val2, double val3,
     if (!Exists(dammId))
         return false;
     */
+#ifdef DAMM
 
     if (val2 == -1 && val3 == -1)
         count1cc_(dammId + offset_, int(val1), 1);
@@ -190,6 +194,7 @@ bool Plots::Plot(int dammId, double val1, double val2, double val3,
         count1cc_(dammId + offset_, int(val1), int(val2));
     else
         set2cc_(dammId + offset_, int(val1), int(val2), int(val3));
+#endif
     return true;
 }
 
