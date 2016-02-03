@@ -49,16 +49,19 @@ namespace dammIds {
 using namespace std;
 using namespace dammIds::vandle;
 
-VandleProcessor::VandleProcessor(): EventProcessor(dammIds::vandle::OFFSET,
-                                                   dammIds::vandle::RANGE,
-                                                   "vandle") {
+VandleProcessor::VandleProcessor(): 
+	EventProcessor(dammIds::vandle::OFFSET,                                                  dammIds::vandle::RANGE,
+       "vandle") 
+{
     associatedTypes.insert("vandle");
 }
 
 VandleProcessor::VandleProcessor(const std::vector<std::string> &typeList,
                                  const double &res, const double &offset,
                                  const unsigned int &numStarts):
-    EventProcessor(dammIds::vandle::OFFSET, dammIds::vandle::RANGE, "vandle") {
+    EventProcessor(dammIds::vandle::OFFSET, dammIds::vandle::RANGE, "vandle"),
+	rootFile_(NULL)
+ {
     associatedTypes.insert("vandle");
     plotMult_ = res;
     plotOffset_ = offset;
@@ -76,7 +79,23 @@ VandleProcessor::VandleProcessor(const std::vector<std::string> &typeList,
     }
     if(typeList.size() == 0)
         hasSmall_ = true;
+
+	//Build root tree
+	rootFile_ = new TFile("output.root","RECREATE");
+	rootTree_ = new TTree("t","vandle");
+	rootTree_->Branch("tof",&rootToFs_);
+	rootTree_->Branch("loc",&rootBarNums_);
+	rootTree_->Branch("mult",&rootMult_);
 }
+
+VandleProcessor::~VandleProcessor() {
+	if (rootFile_) {
+		cout << "Writing ROOT output\n";
+		rootFile_->Write();
+		rootFile_->Close();
+		delete rootFile_;
+	}
+};
 
 void VandleProcessor::DeclarePlots(void) {
     if(hasSmall_) {
@@ -182,6 +201,7 @@ bool VandleProcessor::PreProcess(RawEvent &event) {
 
     ClearMaps();
 
+
     static const vector<ChanEvent*> &events =
         event.GetSummary("vandle")->GetList();
 
@@ -191,7 +211,7 @@ bool VandleProcessor::PreProcess(RawEvent &event) {
         if(events.size() < 2)
             plot(D_DEBUGGING, 2);
         return(false);
-    }
+   }
 
     BarBuilder billy(events);
     bars_ = billy.GetBarMap();
@@ -246,6 +266,11 @@ bool VandleProcessor::Process(RawEvent &event) {
     return(true);
 }
 
+void VandleProcessor::ClearRootVectors() {
+	rootMult_ = 0;
+	rootToFs_.clear();
+	rootBarNums_.clear();
+}
 void VandleProcessor::AnalyzeBarStarts(void) {
     for (BarMap::iterator it = bars_.begin(); it !=  bars_.end(); it++) {
         TimingDefs::TimingIdentifier barId = (*it).first;
@@ -302,6 +327,7 @@ void VandleProcessor::AnalyzeBarStarts(void) {
 } //void VandleProcessor::AnalyzeData
 
 void VandleProcessor::AnalyzeStarts(void) {
+	rootMult_ = bars_.size();
     for (BarMap::iterator it = bars_.begin(); it !=  bars_.end(); it++) {
         TimingDefs::TimingIdentifier barId = (*it).first;
         BarDetector bar = (*it).second;
@@ -318,6 +344,8 @@ void VandleProcessor::AnalyzeStarts(void) {
             if(!(*itStart).second.GetIsValidData())
                 continue;
 
+				rootBarNums_.push_back(barLoc);
+
             unsigned int startLoc = (*itStart).first.first;
             unsigned int barPlusStartLoc = barLoc*numStarts_ + startLoc;
             HighResTimingData start = (*itStart).second;
@@ -328,6 +356,7 @@ void VandleProcessor::AnalyzeStarts(void) {
 
             double corTof =
                 CorrectTOF(tof, bar.GetFlightPath(), cal.GetZ0());
+				rootToFs_.push_back(tof);
 
             plot(DD_TOFBARS+histTypeOffset, tof*plotMult_+plotOffset_, barPlusStartLoc);
             plot(DD_TQDCAVEVSTOF+histTypeOffset, tof*plotMult_+plotOffset_, bar.GetQdc());
@@ -351,6 +380,14 @@ void VandleProcessor::AnalyzeStarts(void) {
             }
         } // for(TimingMap::iterator itStart
     } //(BarMap::iterator itBar
+	rootTree_->Fill();
+	int entries = rootTree_->GetEntriesFast();
+	if (entries % 1000 == 0) {
+		cout << "Tree: " << entries << "\r";
+		fflush(stdout);
+	}
+	ClearRootVectors();
+
 } //void VandleProcessor::AnalyzeData
 
 void VandleProcessor::ClearMaps(void) {

@@ -22,13 +22,17 @@
 #include "EventProcessor.hpp"
 #include "HighResTimingData.hpp"
 
+#include "TFile.h"
+#include "TTree.h"
+#include <vector>
+
 /// Class to process VANDLE related events
 class VandleProcessor : public EventProcessor {
 public:
     /** Default Constructor */
     VandleProcessor();
     /** Default Destructor */
-    ~VandleProcessor() {};
+    ~VandleProcessor();
     /** Declare the plots used in the analysis */
     virtual void DeclarePlots(void);
 
@@ -91,5 +95,13 @@ private:
     /** \return Returns the appropriate offset based off the VANDLE bar type
      * \param [in] type : The type of bar that we are dealing with */
     unsigned int ReturnOffset(const std::string &type);
+
+	TFile *rootFile_;
+	TTree * rootTree_;
+	std::vector< double > rootToFs_;
+ 	std::vector< double > rootBarNums_;
+	int rootMult_;
+	void ClearRootVectors();
+
 };
 #endif
