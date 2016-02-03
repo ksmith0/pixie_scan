@@ -21,7 +21,7 @@ HHIRF_GFORTRAN = 1
 endif
 
 ifeq ($(HHIRF_DIR),)
-HHIRF_DIR = /usr/hhirf
+HHIRF_DIR = /usr/hhirf-intel64
 endif
 
 ifneq ($(LIBS_IN_HHIRF),)
@@ -31,7 +31,7 @@ ifeq ($(ACQ2_LIBDIR),)
 ifneq ($(ACQ2_DIR),)
 ACQ2_LIBDIR = $(ACQ2_DIR)
 else
-ACQ2_LIBDIR = /usr/acq2/lib
+ACQ2_LIBDIR = /usr/acq2n/lib
 endif
 endif
 endif
