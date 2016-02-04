@@ -45,6 +45,8 @@
                    gamma_beta_limit="200e-9"
                    energy_contraction="1.0"/>
         -->
+			<Processor name="VandleProcessor" types="small" res="2" offset="200"
+				numStarts="1"/>
     </DetectorDriver>
 
     <Map verbose_calibration="False" verbose_map="False" verbose_walk="False">
@@ -350,7 +352,6 @@
 -->
 
 
-<!--
     <TimeCalibration verbose_timing="False">
         <Vandle>
             <small>
@@ -358,6 +359,7 @@
                     <TofOffset location="0" offset="7.92150"/>
                     <TofOffset location="1" offset="-.99721"/>
                 </Bar>
+<!--
                 <Bar number="1" lroffset="-4.92041" z0="50.5" xoffset="-.9" zoffset="0.00">
                     <TofOffset location="0" offset="4.89017"/>
                     <TofOffset location="1" offset="-3.80059"/>
@@ -546,10 +548,10 @@
                     <TofOffset location="0" offset="4.56095"/>
                     <TofOffset location="1" offset="-5.00728"/>
                 </Bar>
+-->
             </small>
         </Vandle>
     </TimeCalibration>
--->
 
     <Timing>
         <Physical>
@@ -573,8 +575,8 @@
             </SiPmtWaveformRange>
             <DiscriminationStart unit="sample" value="3"/>
             <TrapezoidalWalk unit="ns" value="60"/>
-            <TraceDelay unit="ns" value="122"/>
-            <TraceLength unit="ns" value="176"/>
+            <TraceDelay unit="ns" value="125"/>
+            <TraceLength unit="ns" value="250"/>
             <QdcCompression value="4.0"/>
         </Trace>
 
