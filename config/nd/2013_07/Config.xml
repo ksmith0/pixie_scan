@@ -355,15 +355,15 @@
     <TimeCalibration verbose_timing="False">
         <Vandle>
             <small>
-                <Bar number="0" lroffset="-5.43427" z0="50.5" xoffset="1.0" zoffset="0.00">
-                    <TofOffset location="0" offset="7.92150"/>
-                    <TofOffset location="1" offset="-.99721"/>
+                <Bar number="0" lroffset="5.52988" z0="47.9" xoffset="0.0" zoffset="1.50">
+                    <TofOffset location="0" offset="-35.76"/>
+                    <TofOffset location="1" offset="0"/>
+                </Bar>
+                <Bar number="1" lroffset="-12.1634" z0="47.9" xoffset="0.0" zoffset="1.5">
+                    <TofOffset location="0" offset="-31.5628"/>
+                    <TofOffset location="1" offset="0"/>
                 </Bar>
 <!--
-                <Bar number="1" lroffset="-4.92041" z0="50.5" xoffset="-.9" zoffset="0.00">
-                    <TofOffset location="0" offset="4.89017"/>
-                    <TofOffset location="1" offset="-3.80059"/>
-                </Bar>
                 <Bar number="2" lroffset="-4.91474" z0="50.5" xoffset=".6" zoffset="0.00">
                     <TofOffset location="0" offset="8.22116"/>
                     <TofOffset location="1" offset="-.62855"/>
