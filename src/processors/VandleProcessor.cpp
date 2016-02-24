@@ -83,8 +83,12 @@ VandleProcessor::VandleProcessor(const std::vector<std::string> &typeList,
 	//Build root tree
 	rootFile_ = new TFile("output.root","RECREATE");
 	rootTree_ = new TTree("t","vandle");
-	rootTree_->Branch("tof",&rootToFs_);
+	rootTree_->Branch("tofRaw",&rootToFs_);
+	rootTree_->Branch("tof",&rootCorrToFs_);
 	rootTree_->Branch("qdc",&rootQdcs_);
+	rootTree_->Branch("qdcPos",&rootQdcPos_);
+	rootTree_->Branch("tdiffRaw",&rootTimeDiffs_);
+	rootTree_->Branch("tdiff",&rootTimeDiffs_);
 	rootTree_->Branch("loc",&rootBarNums_);
 	rootTree_->Branch("mult",&rootMult_);
 	rootTree_->Branch("startMult",&rootStartMult_);
@@ -272,7 +276,11 @@ void VandleProcessor::ClearRootVectors() {
 	rootMult_ = 0;
 	rootStartMult_ = 0;
 	rootToFs_.clear();
+	rootCorrToFs_.clear();
 	rootQdcs_.clear();
+	rootQdcPos_.clear();
+	rootTimeDiffs_.clear();
+	rootWalkCorrTimeDiffs_.clear();
 	rootBarNums_.clear();
 }
 void VandleProcessor::AnalyzeBarStarts(void) {
@@ -362,7 +370,11 @@ void VandleProcessor::AnalyzeStarts(void) {
             double corTof =
                 CorrectTOF(tof, bar.GetFlightPath(), cal.GetZ0());
 				rootToFs_.push_back(tof);
+				rootCorrToFs_.push_back(corTof);
 				rootQdcs_.push_back(bar.GetQdc());
+				rootQdcPos_.push_back(bar.GetQdcPosition());
+				rootTimeDiffs_.push_back(bar.GetTimeDifference());
+				rootWalkCorrTimeDiffs_.push_back(bar.GetWalkCorTimeDiff());
 
             plot(DD_TOFBARS+histTypeOffset, tof*plotMult_+plotOffset_, barPlusStartLoc);
             plot(DD_TQDCAVEVSTOF+histTypeOffset, tof*plotMult_+plotOffset_, bar.GetQdc());

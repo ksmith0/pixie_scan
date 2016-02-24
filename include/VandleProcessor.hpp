@@ -99,8 +99,12 @@ private:
 	TFile *rootFile_;
 	TTree * rootTree_;
 	std::vector< double > rootToFs_;
+	std::vector< double > rootCorrToFs_;
 	std::vector< double > rootQdcs_;
+	std::vector< double > rootTimeDiffs_;
+	std::vector< double > rootWalkCorrTimeDiffs_;
  	std::vector< double > rootBarNums_;
+	std::vector< double > rootQdcPos_;
 	int rootMult_;
 	int rootStartMult_;
 	void ClearRootVectors();
